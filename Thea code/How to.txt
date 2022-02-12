@@ -1,0 +1,7 @@
+5th May 2021
+
+To test with the recordings, there should be a run.m script that I’ve made which should run through all the .wav files (provided they are all in the same folder).
+
+All that needs doing is for the directory of the folder containing the recordings to be assigned to the variable Folder as a string.
+
+Also, just a warning, my code is still pretty buggy and doesn’t work amazingly well with artefacts just yet (something that I do want to fix in future).
