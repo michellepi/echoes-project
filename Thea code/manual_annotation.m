@@ -2,7 +2,7 @@ clear;clc;
 % script for manually annotating recordings
 
 %% load filenames
-Folder = "../../sound_files/good-recordings"; % add path to folder containing .wav files here
+Folder = "../../jade-data/all-data"; % add path to folder containing .wav files here
 
 
 % get filenames for signal extraction 
@@ -19,7 +19,7 @@ S1 = cell(length(filename),2);
 S2 = cell(length(filename),2);
 
 %% run through recordings for manual annotation
-for i=2:length(filename)
+for i=1:length(filename)
     disp(filename(i));
     % read audio file 
     [signal, fs] = audioread(filename(i));

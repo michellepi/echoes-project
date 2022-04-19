@@ -3,12 +3,12 @@ clear
 
 %% Healthy challenge data classification results
 % entire healthy folder path
-Folder_He = '/Users/natsukib/OneDrive/3rd Year/Dissertation/Sound analysis/Heart sounds/Challenge healthy/';
+Folder_He = '../../challenge_dataset/healthy';
 [final_h] = final(Folder_He,1);
 
 %% AS challenge data classification results
 % entire as folder path
-Folder_AS = '/Users/natsukib/OneDrive/3rd Year/Dissertation/Sound analysis/Heart sounds/Challenge aortic disease HS/';
+Folder_AS = '../../challenge_dataset/as';
 [final_as] = final(Folder_AS,2);
 
 %% SDR Classification threshold optimisation

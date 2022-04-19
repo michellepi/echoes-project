@@ -66,6 +66,7 @@ for l = 1:length(S1_s_diff)
     end
 end
 S1_s = S1_s_all(S1_s_all>0); count(1) = length(S1_s); m(1) = mean(S1_s); v(1) = var(S1_s);
+display(S1_s_all)
 
 % S1 - S1 end time differences
 for l = 1:length(S1_e_diff)
@@ -98,6 +99,7 @@ mean_t = mean(m(1:4));
 % mean and std of S1 intervals
 s1_m = mean(m(1:2));
 s1_var = mean(v(1:2)); s1_std = sqrt(s1_var);
+display(v)
 
 % mean and std of S2 intervals
 s2_m = mean(m(3:4));
@@ -106,4 +108,10 @@ s2_var = mean(v(3:4)); s2_std = sqrt(s2_var);
 % number of acceptable windows
 number = floor(mean(count(:)));
 
+display(mean_t)
+display(number)
+display(s1_m)
+display(s1_std)
+display(s2_m)
+display(s2_std)
 end

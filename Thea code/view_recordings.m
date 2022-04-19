@@ -1,8 +1,8 @@
 clear;clc;
 % script for viewing recordings
 %% load filenames
-Folder = "../../sound_files/good-recordings"; % add path to folder containing .wav files here
-
+Folder_ecg = "../../Patient 1 data/ECG"; % add path to folder containing .wav files here
+Folder_pcg = "../../Patient 1 data/PCG"
 % get filenames for signal extraction 
 FileList = dir(fullfile(Folder, '*.wav'));
 filename = strings(size(FileList,1),1); % string array to store the filenames of the recordings to be segmented
@@ -16,7 +16,7 @@ fs2 = 1000;
 idx_file = 1;
 
 % uncomment to view labels for good recordings
-load('good-as-rec-labels.mat'); % Contains S1 and S2 cells with annotations of onset and offset of HSs
+%load('good-as-rec-labels.mat'); % Contains S1 and S2 cells with annotations of onset and offset of HSs
 
 
 %% view each recording
@@ -47,17 +47,17 @@ for i = 1:length(filename)
 
     
     % uncomment to view labels 
-    s1 = cell2mat(S1(i,:));
-    for n = 1:size(s1,1)
-        hold on; xline(s1(n,1),'r','LineWidth',1);
-        hold on; xline(s1(n,2),'r','LineWidth',1);
-    end
+   % s1 = cell2mat(S1(i,:));
+    %for n = 1:size(s1,1)
+        %hold on; xline(s1(n,1),'r','LineWidth',1);
+        %hold on; xline(s1(n,2),'r','LineWidth',1);
+   % end
 
-    s2 = cell2mat(S2(i,:));
-    for n = 1:size(s2,1)
-        hold on; xline(s2(n,1),'g','LineWidth',1);
-        hold on; xline(s2(n,2),'g','LineWidth',1);
-    end
+    %s2 = cell2mat(S2(i,:));
+    %for n = 1:size(s2,1)
+        %hold on; xline(s2(n,1),'g','LineWidth',1);
+        %hold on; xline(s2(n,2),'g','LineWidth',1);
+    %end
     
 end
 

@@ -2,8 +2,8 @@
 % Main script to call all functions
 
 % Enter filename and entire filepath here
-filename = 'a0067';
-path = '/Users/natsukib/OneDrive/3rd Year/Dissertation/Sound analysis/Heart Sounds/Challenge aortic disease HS/';
+filename = '02-04-2021_19.32.40';
+path = '../data/good-recordings/';
 file_type = '.wav';
 total_path = strcat(path,filename,file_type);
 
