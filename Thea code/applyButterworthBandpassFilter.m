@@ -5,9 +5,9 @@ function filtered_signal = applyButterworthBandpassFilter(lowbound, highbound, o
 
 % Apply lowpass butterworth filter
 [b_low,a_low] = butter(order,2*highbound/sampling_freq,'low');
-filtered_signal = filtfilt(b_low,a_low,signal);
+lowpass_filt = filtfilt(b_low,a_low,signal);
 
 % Apply highpass butterworth filter
 [b_high,a_high] = butter(order,2*lowbound/sampling_freq,'high');
-filtered_signal = filtfilt(b_high,a_high,signal);
+filtered_signal = filtfilt(b_high,a_high,lowpass_filt);
 end 

@@ -24,8 +24,8 @@ for i = 1:size(PCG_files,1)
 end
 
 %% Global Variables
-S1 = {}%cell(length(PCG_paths),3);
-S2 = {}%cell(length(PCG_paths),3);
+S1 = {};
+S2 = {};
 
 %% run through recordings for manual annotation
 for i=1:length(PCG_paths)
