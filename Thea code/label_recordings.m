@@ -1,25 +1,28 @@
 clc
 clearvars
 disp_ECG = 1
+
 label_data = 0
 
-PCG_dir = "../../EKO/Patient 1 data/PCG";
-PCG_files = dir(fullfile(PCG_dir, '*.wav'));
+PCG_dir = "../../EKO/Patient 2/PCG";
+PCG_files = dir(fullfile(PCG_dir, '**', '*.wav'));
 [~,p_ind]=sort({PCG_files.name});
 PCG_files = PCG_files(p_ind);
 
 if disp_ECG 
-    ECG_dir = "../../EKO/Patient 1 data/ECG";
-    ECG_files = dir(fullfile(ECG_dir, '*.wav'));
-    [~,e_ind]=sort({ECG_files.name});
+    ECG_dir = "../../EKO/Patient 2/ECG";
+    ECG_files = dir(fullfile(ECG_dir,'**', '*.wav'));
+    [~,e_ind] = sort({ECG_files.name});
     ECG_files = ECG_files(e_ind);
 end
 
-
 for i = 1:size(PCG_files,1)
-  PCG_paths(i) = fullfile(PCG_dir, PCG_files(i).name); % store filenames in str
+  file = fullfile(PCG_files(i).folder, PCG_files(i).name)
+  PCG_paths(i) = string(file); % store filenames in str
+  
   if disp_ECG 
-    ECG_paths(i) = fullfile(ECG_dir, ECG_files(i).name);
+      file = fullfile(ECG_files(i).folder, ECG_files(i).name)
+    ECG_paths(i) = string(file);
   end
 end
 
@@ -33,6 +36,7 @@ for i=1:length(PCG_paths)
     disp(PCG_files(i).name);
     resample_rate = 1000;
     % read audio file 
+    disp(PCG_paths(i))
     [p_signal, p_fs] = audioread(PCG_paths(i));
 
     % re-sample file
@@ -51,7 +55,7 @@ for i=1:length(PCG_paths)
         [e_signal, e_fs] = audioread(ECG_paths(i));
         e_dt = 1/e_fs; 
         e_t = 0:e_dt:(length(e_signal)*e_dt)-e_dt;
-
+        
         e_signal = applyButterworthBandpassFilter(1.5, 100, 4, e_fs, e_signal);
         
         wo = 50/(e_fs/2);  
@@ -62,8 +66,9 @@ for i=1:length(PCG_paths)
         windowWidth = 10; % Whatever you want.
         kernel = ones(windowWidth,1) / windowWidth;
         e_signal = filtfilt(kernel, 1, e_signal);
-
+        
         e_signal = e_signal./max(abs(e_signal));
+        %e_signal = -e_signal;
 
         % display cleaned signal 
         fig = tiledlayout(3,1);
@@ -77,11 +82,11 @@ for i=1:length(PCG_paths)
     else
         fig = figure();
         title(PCG_files(i).name);
-        plot(t, p_signal);
+        plot(t, p_signal, t, hilb);
     end
 
     if label_data
-        good_rec = input(['Is recording good enough?'], 's')
+        good_rec = input(['Label this recording?'], 's')
         if good_rec == 'y'
             S1{i,1} = PCG_files(i).name;
             S2{i,1} = PCG_files(i).name;

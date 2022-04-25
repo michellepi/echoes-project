@@ -17,18 +17,19 @@
 % for loop to run for specific file)
 
 %% ENTER DIRECTORY OF FOLDER CONTAINING RECORDINGS
-Folder = ['../../EKO/Patient 1 data/PCG']; % change this to the full directory of the folder containing all the .wav files
+Folder = ['../../EKO/Patient 2/PCG']; % change this to the full directory of the folder containing all the .wav files
 
 %% creating a matrix to store filenames
-FileList = dir(fullfile(Folder, '*.wav'));
+FileList = dir(fullfile(Folder, '**', '*.wav'));
 display(FileList)
 filenames = strings(size(FileList,1),1);
 for i = 1:size(FileList,1)
-  filenames(i) = fullfile(Folder, FileList(i).name);
+    
+  filenames(i) = string(fullfile(FileList(i).folder, FileList(i).name));
 end
 
 %% run heart sound segmentation for all files in filenames
 %for i=1:size(filenames,1)
  %   pre_processAudio2(filenames(i), 1); 
 %end
-pre_processAudio2(filenames, size(filenames,1)); % Change second input parameter to set reqquired number of files
+pre_processAudio2(filenames, size(filenames,1), Folder); % Change second input parameter to set reqquired number of files
