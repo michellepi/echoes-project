@@ -11,15 +11,27 @@ diaTimeIntv = (60/heartRate-sysTimeIntv);
 
 % calculate difference between peaks
 intv = diff(joined_pks_loc);
-
 % identify peaks that are too close to one another (one of them is an artefact)
 small_intv = find(intv<0.85*sysTimeIntv);
+disp('small_intv')
+disp(small_intv)
 if ~isempty(small_intv)
     % remove appropriate peaks and re-calculate new intv
     for i=1:length(small_intv)
+        disp(i)
         if small_intv(i) > 1
-            if intv(small_intv(i)+1) < intv(small_intv(i)-1) && (joined_pks_loc(small_intv(i)+1)-joined_pks_loc(small_intv(i)-1)) < 1.25*diaTimeIntv
+            disp('current small intv');disp(small_intv(i));
+            if small_intv(i) == length(intv)
                 rm_idx(end+1) = small_intv(i);
+
+                % if the next interval is smaller than previous interval
+                % and the interval between the previous peak and the next
+                % peak is lower than 1.25*DTI remove this peak
+            elseif intv(small_intv(i)+1) < intv(small_intv(i)-1) && (joined_pks_loc(small_intv(i)+1)-joined_pks_loc(small_intv(i)-1)) < 1.25*diaTimeIntv
+                
+                rm_idx(end+1) = small_intv(i);
+                % if the interval between the current peak and the 2nd peak
+                % from current is smalelr than DTI, 
             elseif (joined_pks_loc(small_intv(i)+2)-joined_pks_loc(small_intv(i))) < 1.25*diaTimeIntv
                 rm_idx(end+1) = small_intv(i)+1;
             end
