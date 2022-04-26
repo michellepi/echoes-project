@@ -5,24 +5,24 @@ disp_ECG = 1
 label_data = 0
 root = "../../Healthy Volunteer/EMILIE - SITTING";
 
-PCG_dir = fullfile(root, "/PCG")
+PCG_dir = fullfile(root, "/PCG");
 PCG_files = dir(fullfile(PCG_dir, '**', '*.wav'));
 [~,p_ind]=sort({PCG_files.name});
 PCG_files = PCG_files(p_ind);
 
 if disp_ECG 
-    ECG_dir = fullfile(root, "/ECG")
+    ECG_dir = fullfile(root, "/ECG");
     ECG_files = dir(fullfile(ECG_dir,'**', '*.wav'));
     [~,e_ind] = sort({ECG_files.name});
     ECG_files = ECG_files(e_ind);
 end
 
 for i = 1:size(PCG_files,1)
-  file = fullfile(PCG_files(i).folder, PCG_files(i).name)
+  file = fullfile(PCG_files(i).folder, PCG_files(i).name);
   PCG_paths(i) = string(file); % store filenames in str
   
   if disp_ECG 
-      file = fullfile(ECG_files(i).folder, ECG_files(i).name)
+      file = fullfile(ECG_files(i).folder, ECG_files(i).name);
     ECG_paths(i) = string(file);
   end
 end
@@ -33,10 +33,9 @@ S2 = {};
 
 %% run through recordings for manual annotation
 for i=1:length(PCG_paths)
-    disp(PCG_files(i).name);
     resample_rate = 1000;
     % read audio file 
-    disp(PCG_paths(i))
+    disp(strcat("Processing ", PCG_files(i).name));
     [p_signal, p_fs] = audioread(PCG_paths(i));
 
     M=p_fs;% define the window-length
@@ -48,7 +47,7 @@ for i=1:length(PCG_paths)
     xticks(0:100:max(f));
     xlabel('frequency (Hz)');% label axes
     ylabel('PSD (microV^2/Hz)');
-    p_title = strcat('PSD of PCG signal ', PCG_files(i).name)
+    p_title = strcat('PSD of PCG signal ', PCG_files(i).name);
 
     title(p_title);
 
@@ -58,7 +57,7 @@ for i=1:length(PCG_paths)
     t = 0:dt:(length(p_signal)*dt)-dt;
 
     % de-noise signal
-    %p_signal = applyButterworthBandpassFilter(25, 165, 3, resample_rate, p_signal);
+    % High and low pass filtering
      p_low={};
      p_low.N=2;
      p_low.type='butter';
@@ -80,7 +79,6 @@ for i=1:length(PCG_paths)
      
     if disp_ECG
         [e_signal, e_fs] = audioread(ECG_paths(i));
-        disp(e_fs)
         e_dt = 1/e_fs; 
         e_t = 0:e_dt:(length(e_signal)*e_dt)-e_dt;
 
@@ -93,15 +91,16 @@ for i=1:length(PCG_paths)
         xticks(0:10:max(f));
         xlabel('frequency (Hz)');% label axes
         ylabel('PSD (microV^2/Hz)');
-        p_title = strcat('PSD of ECG signal ', PCG_files(i).name)
+        p_title = strcat('PSD of ECG signal ', PCG_files(i).name);
         title(p_title);
        
+        % High and low pass filtering
         p_low={};
         p_low.N=2;
         p_low.type='butter';
         p_low.lphp='low';
         [b,a]=make_digital_filter(150, e_fs, p_low);
-        e_signal = filtfilt(b, a, e_signal)
+        e_signal = filtfilt(b, a, e_signal);
         
         p_high={};
         p_high.N=2;
@@ -109,8 +108,6 @@ for i=1:length(PCG_paths)
         p_high.lphp='high';
         [b,a]=make_digital_filter(1, e_fs, p_high);
         e_signal = filtfilt(b, a, e_signal);
-        
-        %e_signal = applyButterworthBandpassFilter(1, 20, 4, e_fs, e_signal);
         
         wo = 50/(e_fs/2);  
         bw = wo;
@@ -161,6 +158,7 @@ for i=1:length(PCG_paths)
             
             %%
             num = input('How many S2 sounds do you see? ');
+
             disp('Choose start of s2 sounds');
             [s2_start,y] = ginput(num);
             % store value of x coordinate
@@ -172,8 +170,8 @@ for i=1:length(PCG_paths)
             % store value of x coordinate
             S2{i,3} = s2_end;
         
-            save(fullfile(PCG_dir,'S1.mat'), 'S1')
-            save(fullfile(PCG_dir,'S2.mat'), 'S2')
+            save(fullfile(PCG_dir,'S1.mat'), 'S1');
+            save(fullfile(PCG_dir,'S2.mat'), 'S2');
             
         
             y = input(['Do you wish to continue to the next recording? '],'s');
